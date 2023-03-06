@@ -129,11 +129,11 @@ def delete_downloaded_song():
             fp.writelines(lines[1:])   
 
 def put_it_there(songer):
-
+    #Puts song not downloaded in the undownloaded.txt
     with open("undownloaded.txt", "a") as f:
         f.write("\n")
         f.write(songer)
                  
 
 create_param()
-print("Execution Complete master")
+print("Execution Complete Master")
