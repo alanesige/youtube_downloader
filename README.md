@@ -16,3 +16,5 @@ There is a code to get spotify playlist to a txt file so after that, just use th
 The spotify playlist to txt should be in myy repository somewhere.
 
 one can also get songs in txt manually or from youtube or ....
+
+You can use the rename_code in my repository to rename downloaded songs to spotify naming conventions
