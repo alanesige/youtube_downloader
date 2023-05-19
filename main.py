@@ -81,12 +81,12 @@ def wee_is_searching(search_parameter):
                                 downloader_mp3(thee_link)
 
 def downloader_mp3(song_id):
-            diry = "C:/Users/Esige Ndagona/Desktop/py Projects/ytmp3/Pop"
+            diry = "C:/Users/Esige Ndagona/Desktop/py Projects/ytmp3/Trapper/Drapper"
 
             try:
                 # print(song_id)
                 # print('in dowloader try')
-                yt = YouTube(str(song_id))
+                yt = YouTube(str(song_id), use_oauth=True, allow_oauth_cache=True)
                 video = yt.streams.filter(only_audio=True).first()
                 destination = diry
                 out_file = video.download(output_path=destination)
@@ -99,7 +99,7 @@ def downloader_mp3(song_id):
                 
                 # print('in except downloader')
                 # print(ez)
-                audio = YouTube(song_id)     
+                audio = YouTube(song_id, use_oauth=True, allow_oauth_cache=True)     
                 output = audio.streams.get_audio_only().download()
                 base, ext = os.path.splitext(output)
                 new_file = base + '.mp3'
