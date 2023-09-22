@@ -2,6 +2,8 @@ import urllib.request
 import re
 from pytube import YouTube
 import os
+import yt_dlp
+import winsound
 """
 This is what I do:
 I work with a txt file to download a song from the list and the kick the downloaded 
@@ -81,13 +83,19 @@ def wee_is_searching(search_parameter):
                                 downloader_mp3(thee_link)
 
 def downloader_mp3(song_id):
-            diry = "C:/Users/Esige Ndagona/Desktop/py Projects/ytmp3/Trapper/Drapper"
+            diry =  "C:/Users/esige/Desktop/Python/Downloader MP3/Drapper"
 
             try:
                 # print(song_id)
                 # print('in dowloader try')
-                yt = YouTube(str(song_id), use_oauth=True, allow_oauth_cache=True)
-                video = yt.streams.filter(only_audio=True).first()
+                yt = YouTube(
+                              str(song_id) 
+                             , use_oauth=True
+                             ,allow_oauth_cache=True
+                           )
+                #video = yt.streams.filter(only_audio=True).first()
+                #, file_extension='mp4'
+                video = yt.streams.filter(only_audio=True).order_by('resolution').desc().first()
                 destination = diry
                 out_file = video.download(output_path=destination)
                 base, ext = os.path.splitext(out_file)
@@ -96,16 +104,32 @@ def downloader_mp3(song_id):
                 print(yt.title + " has been successfully downloaded.")
 
             except Exception as ez:
-                
-                # print('in except downloader')
-                # print(ez)
-                audio = YouTube(song_id, use_oauth=True, allow_oauth_cache=True)     
-                output = audio.streams.get_audio_only().download()
-                base, ext = os.path.splitext(output)
-                new_file = base + '.mp3'
-                os.rename(output, new_file)
+                try:
+                        # print('in except downloader')
+                        # print(ez)
+                        audio = YouTube(song_id, use_oauth=True,allow_oauth_cache=True)     
+                        output = audio.streams.get_audio_only().download()
+                        base, ext = os.path.splitext(output)
+                        new_file = base + '.mp3'
+                        os.rename(output, new_file)
 
-                print(yt.title + " has been successfully downloaded.")
+                        print(yt.title + " has been successfully downloaded.")
+                except:
+                       ydl_opts = {
+                                'format': 'bestaudio/best',  # Select the best audio quality
+                                'postprocessors': [{
+                                        'key': 'FFmpegExtractAudio',  # Extract audio using FFmpeg
+                                        'preferredcodec': 'mp3',  # Convert to MP3 format
+                                        'preferredquality': '192',  # Set audio quality
+                                }],
+                                'outtmpl': diry+ '%(title)s.%(ext)s',  # Output file template
+                                'quiet': True,  # Suppress output messages
+                               # 'ffmpeg_location': r'C:\ffmpeg-master-latest-win64-gpl-shared\bin',  # Replace with your location of FFmpeg executable
+                               'ffmpeg_location': r'C:/Program Files/ffmpeg-master/bin/ffmpeg.exe',  # Replace with your location of FFmpeg executable
+                                }
+                       
+                       yt_dlp.YoutubeDL(ydl_opts).download(song_id)
+                       print(str(song_id)+" downloaded a age restricted song")   
 
 def refine_name_first(filename):
        
@@ -137,3 +161,4 @@ create_param()
 # songs_in_txt()
 # delete_downloaded_song()
 print("Execution Complete Master")
+winsound.Beep(440, 1000)
